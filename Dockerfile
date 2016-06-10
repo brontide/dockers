@@ -4,14 +4,14 @@ ENV s=60
 ENV c=1440
 
 RUN apt-get update && \
-    apt-get install -y curl lshw || yum install -y curl lshw net-tools
+    apt-get install -y lshw || yum install -y lshw net-tools
 WORKDIR /opt/nmon
 
 
-RUN curl -L -o nmon https://github.com/axibase/nmon/releases/download/16d/nmon_x86_ubuntu && \
-    chmod +x nmon
-RUN curl -o entrypoint.sh https://raw.githubusercontent.com/axibase/dockers/nmon/entrypoint.sh && \
-    chmod +x entrypoint.sh
+ADD https://github.com/axibase/nmon/releases/download/16d/nmon_x86_ubuntu nmon 
+ADD https://raw.githubusercontent.com/axibase/dockers/nmon/entrypoint.sh entrypoint.sh
 
-ENTRYPOINT ["/opt/nmon/entrypoint.sh"]
+RUN chmod +x nmon
+
+ENTRYPOINT ["/bin/bash", "/opt/nmon/entrypoint.sh"]
 
